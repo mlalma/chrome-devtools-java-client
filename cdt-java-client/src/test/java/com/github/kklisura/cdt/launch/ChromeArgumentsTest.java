@@ -25,6 +25,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import com.github.kklisura.cdt.launch.support.annotations.ChromeArgument;
 import java.util.HashMap;
 import org.easymock.EasyMockSupport;
 import org.junit.Test;
@@ -101,6 +102,17 @@ public class ChromeArgumentsTest extends EasyMockSupport {
     assertEquals("v1", build.getAdditionalArguments().get("some-arg1"));
   }
 
+  @Test
+  public void testWindowSizeAndPositionParams() {
+    ChromeArguments build = ChromeArguments.defaults(true)
+        .windowPosition(100, 100)
+        .windowSize(200, 200)
+        .build();
+
+    assertTrue(build.getWindowSize().equals("200,200"));
+    assertTrue(build.getWindowPosition().equals("100,100"));
+  }
+
   private void assertDefaults(ChromeArguments args) {
     assertTrue(args.getNoFirstRun());
     assertTrue(args.getNoDefaultBrowserCheck());
@@ -116,6 +128,8 @@ public class ChromeArgumentsTest extends EasyMockSupport {
     assertTrue(args.getMetricsRecordingOnly());
     assertTrue(args.getSafebrowsingDisableAutoUpdate());
     assertTrue(args.getDisablePopupBlocking());
+    assertTrue(args.getWindowPosition().equals("0,0"));
+    assertTrue(args.getWindowSize().equals("1400,800"));
 
     assertNull(args.getUserDataDir());
 

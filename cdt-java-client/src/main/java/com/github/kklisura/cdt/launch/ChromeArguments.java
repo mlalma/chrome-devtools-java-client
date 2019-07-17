@@ -47,6 +47,12 @@ public class ChromeArguments {
   @ChromeArgument(USER_DATA_DIR_ARGUMENT)
   private String userDataDir;
 
+  @ChromeArgument("window-size")
+  private String windowSize;
+
+  @ChromeArgument("window-position")
+  private String windowPosition;
+
   @ChromeArgument("incognito")
   private Boolean incognito;
 
@@ -300,6 +306,20 @@ public class ChromeArguments {
   }
 
   /**
+   * Gets current resolution for the browser window.
+   *
+   * @return Resolution of the Chrome window.
+   */
+  public String getWindowSize() { return windowSize; }
+
+  /**
+   * Gets the Chrome window position on screen.
+   *
+   * @return Chrome window position on screen.
+   */
+  public String getWindowPosition() { return windowPosition; }
+
+  /**
    * Builder builder.
    *
    * @return Builder. builder
@@ -331,7 +351,9 @@ public class ChromeArguments {
             .disableSync()
             .disableTranslate()
             .metricsRecordingOnly()
-            .safebrowsingDisableAutoUpdate();
+            .safebrowsingDisableAutoUpdate()
+            .windowPosition()
+            .windowSize();
 
     if (headless) {
       builder.headless().disableGpu().hideScrollbars().muteAudio();
@@ -775,6 +797,52 @@ public class ChromeArguments {
      */
     public Builder safebrowsingDisableAutoUpdate() {
       return safebrowsingDisableAutoUpdate(Boolean.TRUE);
+    }
+
+    /**
+     * Launched window size.
+     *
+     * @param width Width of the browser window.
+     * @param height Height of the browser window.
+     * @return This builder.
+     */
+    public Builder windowSize(int width, int height) {
+      StringBuilder stringBuilder = new StringBuilder();
+      stringBuilder.append(width).append(",").append(height);
+      arguments.windowSize =  stringBuilder.toString();
+      return this;
+    }
+
+    /**
+     * Default window size setter.
+     *
+     * @return This builder.
+     */
+    public Builder windowSize() {
+      return windowSize(1400, 800);
+    }
+
+    /**
+     * Launched window position on screen.
+     *
+     * @param x X-position on screen.
+     * @param y Y-position on screen.
+     * @return This builder.
+     */
+    public Builder windowPosition(int x, int y) {
+      StringBuilder stringBuilder = new StringBuilder();
+      stringBuilder.append(x).append(",").append(y);
+      arguments.windowPosition = stringBuilder.toString();
+      return this;
+    }
+
+    /**
+     * Default window position setter.
+     *
+     * @return This builder.
+     */
+    public Builder windowPosition() {
+      return windowPosition(0, 0);
     }
 
     /**

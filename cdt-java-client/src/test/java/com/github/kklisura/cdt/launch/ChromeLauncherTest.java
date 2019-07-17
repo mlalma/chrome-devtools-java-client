@@ -171,6 +171,8 @@ public class ChromeLauncherTest extends EasyMockSupport {
             .remoteDebuggingPort(null)
             .disableBackgroundNetworking()
             .disableDefaultApps()
+            .windowPosition(100, 100)
+            .windowSize(500, 800)
             .build();
 
     shutdownHookRegistry.register(anyObject());
@@ -199,12 +201,15 @@ public class ChromeLauncherTest extends EasyMockSupport {
 
     List<String> arguments = captureArguments.getValue();
 
-    assertEquals(5, arguments.size());
+    assertEquals(7, arguments.size());
     assertTrue(arguments.contains("--incognito"));
     assertTrue(arguments.contains("--disable-background-networking"));
     assertTrue(arguments.contains("--disable-default-apps"));
     assertTrue(arguments.contains("--remote-debugging-port=0"));
     assertTrue(arguments.contains("--user-data-dir=temp-user-data-dir"));
+    assertTrue(arguments.contains("--window-position=100,100"));
+    assertTrue(arguments.contains("--window-size=500,800"));
+
 
     try {
       launcher.launch(binaryPath, chromeArguments);
@@ -416,7 +421,7 @@ public class ChromeLauncherTest extends EasyMockSupport {
     assertEquals(9123, ((ChromeServiceImpl) launch).getPort());
 
     List<String> arguments = captureArguments.getValue();
-    assertEquals(20, arguments.size());
+    assertEquals(22, arguments.size());
     assertTrue(arguments.contains("--no-first-run"));
     assertTrue(arguments.contains("--remote-debugging-port=0"));
     assertTrue(arguments.contains("--mute-audio"));
@@ -437,6 +442,8 @@ public class ChromeLauncherTest extends EasyMockSupport {
     assertTrue(arguments.contains("--disable-sync"));
     assertTrue(arguments.contains("--disable-gpu"));
     assertTrue(arguments.contains("--user-data-dir=temp-user-data-dir"));
+    assertTrue(arguments.contains("--window-position=0,0"));
+    assertTrue(arguments.contains("--window-size=1400,800"));
   }
 
   @Test(expected = RuntimeException.class)
